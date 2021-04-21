@@ -21,7 +21,7 @@ class DeepSymbolicRegressor(BaseEstimator, RegressorMixin):
         config = deepcopy(self.DSO_.config)
         config["task"]["task_type"] = "regression"
         config["task"]["dataset"] = (X, y)
-        self.DSO_update_config(config)
+        self.DSO_.update_config(config)
 
         train_result = self.DSO_.train()
         self.program_ = train_result["program"]
