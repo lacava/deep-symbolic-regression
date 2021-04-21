@@ -6,24 +6,24 @@ from sklearn.utils.validation import check_is_fitted
 from dsr import DeepSymbolicOptimizer
 
 
-class DeepSymbolicRegressor(DeepSymbolicOptimizer,
-                            BaseEstimator, RegressorMixin):
+class DeepSymbolicRegressor(BaseEstimator, RegressorMixin):
     """
     Sklearn interface for deep symbolic regression.
     """
 
     def __init__(self, config=None):
-        DeepSymbolicOptimizer.__init__(self, config)
+        self.config = config
 
     def fit(self, X, y):
-
+        
+        self.DSO_ = DeepSymbolicOptimizer(self.config)
         # Update the Task
-        config = deepcopy(self.config)
+        config = deepcopy(self.DSO_.config)
         config["task"]["task_type"] = "regression"
         config["task"]["dataset"] = (X, y)
-        self.update_config(config)
+        self.DSO_update_config(config)
 
-        train_result = self.train()
+        train_result = self.DSO_.train()
         self.program_ = train_result["program"]
 
         return self
